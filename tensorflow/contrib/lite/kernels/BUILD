@@ -135,6 +135,8 @@ cc_library(
     srcs = [
         "activations.cc",
         "add.cc",
+        "arg_max.cc",
+        "audio_spectrogram.cc",
         "basic_rnn.cc",
         "batch_to_space_nd.cc",
         "bidirectional_sequence_lstm.cc",
@@ -155,7 +157,9 @@ cc_library(
         "local_response_norm.cc",
         "lsh_projection.cc",
         "lstm.cc",
+        "maximum_minimum.cc",
         "mean.cc",
+        "mfcc.cc",
         "mul.cc",
         "pad.cc",
         "pooling.cc",
@@ -196,15 +200,42 @@ cc_library(
         "//tensorflow/contrib/lite:framework",
         "//tensorflow/contrib/lite:string_util",
         "//tensorflow/contrib/lite/kernels:gemm_support",
+        "//tensorflow/contrib/lite/kernels/internal:audio_utils",
         "//tensorflow/contrib/lite/kernels/internal:kernel_utils",
         "//tensorflow/contrib/lite/kernels/internal:optimized",
         "//tensorflow/contrib/lite/kernels/internal:optimized_base",
         "//tensorflow/contrib/lite/kernels/internal:quantization_util",
         "//tensorflow/contrib/lite/kernels/internal:reference",
         "//tensorflow/contrib/lite/kernels/internal:reference_base",
-        "//tensorflow/contrib/lite/kernels/internal:round",
         "//tensorflow/contrib/lite/kernels/internal:tensor_utils",
         "@farmhash_archive//:farmhash",
+        "@flatbuffers",
+    ],
+)
+
+tf_cc_test(
+    name = "audio_spectrogram_test",
+    size = "small",
+    srcs = ["audio_spectrogram_test.cc"],
+    deps = [
+        ":builtin_ops",
+        "//tensorflow/contrib/lite:framework",
+        "//tensorflow/contrib/lite/kernels:test_util",
+        "@com_google_googletest//:gtest",
+        "@flatbuffers",
+    ],
+)
+
+tf_cc_test(
+    name = "mfcc_test",
+    size = "small",
+    srcs = ["mfcc_test.cc"],
+    deps = [
+        ":builtin_ops",
+        "//tensorflow/contrib/lite:framework",
+        "//tensorflow/contrib/lite/kernels:test_util",
+        "@com_google_googletest//:gtest",
+        "@flatbuffers",
     ],
 )
 
@@ -228,6 +259,54 @@ tf_cc_test(
     name = "add_test",
     size = "small",
     srcs = ["add_test.cc"],
+    tags = [
+        "tflite_not_portable_ios_arm64",
+        "tflite_not_portable_ios_x86_64",
+    ],
+    deps = [
+        ":builtin_ops",
+        "//tensorflow/contrib/lite:framework",
+        "//tensorflow/contrib/lite/kernels:test_util",
+        "@com_google_googletest//:gtest",
+    ],
+)
+
+tf_cc_test(
+    name = "arg_max_test",
+    size = "small",
+    srcs = ["arg_max_test.cc"],
+    tags = [
+        "tflite_not_portable_ios_arm64",
+        "tflite_not_portable_ios_x86_64",
+    ],
+    deps = [
+        ":builtin_ops",
+        "//tensorflow/contrib/lite:framework",
+        "//tensorflow/contrib/lite/kernels:test_util",
+        "@com_google_googletest//:gtest",
+    ],
+)
+
+tf_cc_test(
+    name = "div_test",
+    size = "small",
+    srcs = ["div_test.cc"],
+    tags = [
+        "tflite_not_portable_ios_arm64",
+        "tflite_not_portable_ios_x86_64",
+    ],
+    deps = [
+        ":builtin_ops",
+        "//tensorflow/contrib/lite:framework",
+        "//tensorflow/contrib/lite/kernels:test_util",
+        "@com_google_googletest//:gtest",
+    ],
+)
+
+tf_cc_test(
+    name = "sub_test",
+    size = "small",
+    srcs = ["sub_test.cc"],
     tags = [
         "tflite_not_portable_ios_arm64",
         "tflite_not_portable_ios_x86_64",
@@ -476,6 +555,18 @@ tf_cc_test(
 )
 
 tf_cc_test(
+    name = "maximum_minimum_test",
+    size = "small",
+    srcs = ["maximum_minimum_test.cc"],
+    deps = [
+        ":builtin_ops",
+        "//tensorflow/contrib/lite:framework",
+        "//tensorflow/contrib/lite/kernels:test_util",
+        "@com_google_googletest//:gtest",
+    ],
+)
+
+tf_cc_test(
     name = "mean_test",
     size = "small",
     srcs = ["mean_test.cc"],
@@ -649,6 +740,7 @@ tf_cc_test(
         ":builtin_ops",
         "//tensorflow/contrib/lite:framework",
         "//tensorflow/contrib/lite/kernels:test_util",
+        "@com_google_absl//absl/memory",
         "@com_google_googletest//:gtest",
     ],
 )

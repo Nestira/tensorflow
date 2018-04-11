@@ -18,6 +18,7 @@ gen_zipped_test_files(
     name = "optest",
     files = [
         "add.zip",
+        "arg_max.zip",
         "avg_pool.zip",
         "batch_to_space_nd.zip",
         "concat.zip",
@@ -35,11 +36,13 @@ gen_zipped_test_files(
         "l2norm.zip",
         "local_response_norm.zip",
         "log_softmax.zip",
-        "lstm.zip",
         "max_pool.zip",
+        "maximum.zip",
         "mean.zip",
+        "minimum.zip",
         "mul.zip",
         "pad.zip",
+        "prelu.zip",
         "relu.zip",
         "relu1.zip",
         "relu6.zip",
@@ -371,18 +374,6 @@ tf_cc_test(
             "//tensorflow/core:android_tensorflow_test_lib",
         ],
     }),
-)
-
-filegroup(
-    name = "all_files",
-    srcs = glob(
-        ["**/*"],
-        exclude = [
-            "**/METADATA",
-            "**/OWNERS",
-        ],
-    ),
-    visibility = ["//tensorflow:__subpackages__"],
 )
 
 tflite_portable_test_suite()
